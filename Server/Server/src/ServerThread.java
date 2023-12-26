@@ -6,9 +6,11 @@ public class ServerThread extends Thread {
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	String message;
+	AllUsers myRegisteredUsers;
 
-	public ServerThread(Socket s) {
+	public ServerThread(Socket s, AllUsers registeredUsers) {
 		myConnection = s;
+		myRegisteredUsers = registeredUsers;
 	}
 
 	public void run() {
@@ -18,16 +20,22 @@ public class ServerThread extends Thread {
 			in = new ObjectInputStream(myConnection.getInputStream());
 
 			// Server comms.
-			sendMessage("Welcome to the banking app. Please select an option: \n1. Create an account. \n2. Log-in.\n");
-			message = (String) in.readObject();
+			if (!myRegisteredUsers.hasUsers()) {
+				sendMessage("No users exist. Please create an account. \n1. Create an account. \n2. Log-in.\n");
+				message = (String) in.readObject();
+			} 
+			else {
+				sendMessage("Welcome to the banking app. Please select an option: \n1. Create an account. \n2. Log-in.\n");
+				message = (String) in.readObject();
+			}
 
 			// Log-in.
 			if (message.equalsIgnoreCase("1")) {
-				
-			} 
+
+			}
 			// Create an account.
 			else if (message.equalsIgnoreCase("2")) {
-				
+
 			}
 
 			in.close();
