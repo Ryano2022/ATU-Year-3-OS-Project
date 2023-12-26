@@ -1,0 +1,42 @@
+1. Register to the bank.
+- Set:
+Name
+PPSN (UNIQUE!!!)
+E-mail (UNIQUE!!!)
+Password
+Address
+Initial Balance
+- Save it on the server side.
+- Log it on a txt file.
+
+
+
+2. Log in to bank.
+- Ask for e-mail and password.
+- Check if the password matches the registered password on server side.
+- If not, deny access. If matches, allow access.
+
+
+
+3. Show an options menu to do one of these: 
+Lodge money
+- Just add a number.
+- Record to a log.
+
+Show all users
+- Look for the log of all registered users and show them.
+
+Transfer money (using PPSN and E-mail)
+- Ask for the PPSN and e-mail of the person you want to transfer to.
+- Check it exists.
+- If not, ask to enter again. If yes, proceed.
+- Remove money from your own account.
+- Add money to the other persons account.
+- Record to a log.
+- Show success message to sender.
+
+Show all your bank account transactions.
+- Read log of your transactions.
+
+Update passwords.
+- Edit registered user's password in the log of all users.
