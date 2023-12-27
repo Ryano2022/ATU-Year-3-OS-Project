@@ -2,10 +2,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class AllUsers {
-  LinkedList<User> allUsers;
+  LinkedList<User> userList;
 
   public AllUsers() {
-    allUsers = new LinkedList<User>();
+    userList = new LinkedList<User>();
   }
 
   public synchronized void addUser(String name, String ppsn, String email, String password, String address,
@@ -18,11 +18,11 @@ public class AllUsers {
     newUser.setAddress(address);
     newUser.setBalance(Double.parseDouble(balance));
 
-    allUsers.add(newUser);
+    userList.add(newUser);
   }
 
   public synchronized String searchList(String name) {
-    Iterator<User> i = allUsers.iterator();
+    Iterator<User> i = userList.iterator();
     int found = 0;
     String response = "Not found";
 
@@ -38,6 +38,6 @@ public class AllUsers {
   }
 
   public synchronized boolean hasUsers() {
-    return !allUsers.isEmpty();
+    return !userList.isEmpty();
   }
 }

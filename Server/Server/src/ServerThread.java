@@ -6,11 +6,11 @@ public class ServerThread extends Thread {
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	String message;
-	AllUsers myRegisteredUsers;
+	AllUsers userList;
 
 	public ServerThread(Socket s, AllUsers registeredUsers) {
 		myConnection = s;
-		myRegisteredUsers = registeredUsers;
+		userList = registeredUsers;
 	}
 
 	public void run() {
@@ -20,7 +20,7 @@ public class ServerThread extends Thread {
 			in = new ObjectInputStream(myConnection.getInputStream());
 
 			// Server comms.
-			if (!myRegisteredUsers.hasUsers()) {
+			if (!userList.hasUsers()) {
 				sendMessage("No users exist. Please create an account. \n1. Create an account. \n2. Log-in.\n");
 				message = (String) in.readObject();
 			} 
