@@ -30,18 +30,48 @@ public class Requester {
 
 			// Client comms.
 			try {
+				// Welcome message.
 				message = (String) in.readObject();
 				System.out.println(message);
-				response = input.next();
-				sendMessage(response);
 
-				if (response.equalsIgnoreCase("1")) {
+				// User input.
+				// Name
+				message = (String) in.readObject();
+				System.out.println(message);
+				message = input.nextLine();
+				sendMessage(message);
 
-				} else if (response.equalsIgnoreCase("2")) {
+				// PPSN
+				message = (String) in.readObject();
+				System.out.println(message);
+				message = input.nextLine();
+				sendMessage(message);
 
-				}
+				// Email
+				message = (String) in.readObject();
+				System.out.println(message);
+				message = input.nextLine();
+				sendMessage(message);
+
+				// Password
+				message = (String) in.readObject();
+				System.out.println(message);
+				message = input.nextLine();
+				sendMessage(message);
+
+				// Address
+				message = (String) in.readObject();
+				System.out.println(message);
+				message = input.nextLine();
+				sendMessage(message);
+
+				// Balance
+				message = (String) in.readObject();
+				System.out.println(message);
+				message = input.nextLine();
+				sendMessage(message);
+
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} catch (UnknownHostException unknownHost) {
@@ -64,7 +94,7 @@ public class Requester {
 		try {
 			out.writeObject(msg);
 			out.flush();
-			System.out.println("client> " + msg);
+			//System.out.println("\nclient> " + msg);
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
 		}
