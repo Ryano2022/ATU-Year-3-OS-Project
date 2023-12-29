@@ -12,7 +12,7 @@ public class Provider {
 
 			while (true) {
 				// 2. Wait for connection
-				System.out.println("Waiting for connection");
+				System.out.println("Waiting for connection. ");
 
 				Socket connection = providerSocket.accept();
 				ServerThread T1 = new ServerThread(connection, sharedList);
