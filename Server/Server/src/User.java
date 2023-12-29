@@ -74,6 +74,6 @@ public class User {
   }
 
   public String toString() {
-    return theName + "*" + thePPSN + "*" + theEmail + "*" + thePassword + "*" + theAddress + "*" + theBalance;
+    return theName + "," + thePPSN + "," + theEmail + "," + thePassword + "," + theAddress + "," + theBalance;
   }
 }
