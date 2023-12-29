@@ -36,9 +36,6 @@ public class AllUsers {
     // Add the user to the list.
     userList.add(newUser);
     System.out.println("User " + name + " added. ");
-
-    // Print the user's details to a file.
-    printUserInfoToFile("users.txt");
   }
 
   // Search the list for a user based on name, PPSN or e-mail.
@@ -105,15 +102,31 @@ public class AllUsers {
 
   // Print all user information to a text file.
   public synchronized void printUserInfoToFile(String filePath) {
-    try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+    try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
       Iterator<User> iterator = userList.iterator();
       while (iterator.hasNext()) {
         User user = iterator.next();
         writer.println(user.toString());
       }
-      System.out.println("User information printed to file: " + filePath);
-    } catch (IOException e) {
-      System.out.println("Error printing user information to file: " + e.getMessage());
+      System.out.println("User information appended to file: " + filePath);
+    } 
+    catch (IOException e) {
+      System.out.println("Error appending user information to file: " + e.getMessage());
+    }
+  }
+
+  // Read all user information from a text file.
+  public synchronized void readUserInfoFromFile(String filePath) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        String[] user = line.split(",");
+        addUser(user[0], user[1], user[2], user[3], user[4], user[5]);
+      }
+      System.out.println("User information read from file: " + filePath);
+    } 
+    catch (IOException e) {
+      System.out.println("Error reading user information from file: " + e.getMessage());
     }
   }
 }
