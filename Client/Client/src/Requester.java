@@ -27,64 +27,61 @@ public class Requester {
 			in = new ObjectInputStream(requestSocket.getInputStream());
 
 			// 3. Communicating with the server.
-
-			// Client comms.
 			try {
 				// Welcome message.
 				message = (String) in.readObject();
 				System.out.println(message);
 
 				// User input.
-				// Name
-				message = (String) in.readObject();
-				System.out.println(message);
-				message = input.nextLine();
-				sendMessage(message);
+				if (message.equalsIgnoreCase("No users exist. Please create an account. ")) {
+					createAccount();
+				} 
+				else {
+					// 1 = Log-in.
+					// 2 = Create an account.
+					response = input.nextLine();
+					sendMessage(response);
 
-				// PPSN
-				message = (String) in.readObject();
-				System.out.println(message);
-				message = input.nextLine();
-				sendMessage(message);
+					if (response.equalsIgnoreCase("1")) {
+						// Log-in.
+						// Email
+						message = (String) in.readObject();
+						System.out.println(message);
+						response = input.nextLine();
+						sendMessage(response);
 
-				// Email
-				message = (String) in.readObject();
-				System.out.println(message);
-				message = input.nextLine();
-				sendMessage(message);
-
-				// Password
-				message = (String) in.readObject();
-				System.out.println(message);
-				message = input.nextLine();
-				sendMessage(message);
-
-				// Address
-				message = (String) in.readObject();
-				System.out.println(message);
-				message = input.nextLine();
-				sendMessage(message);
-
-				// Balance
-				message = (String) in.readObject();
-				System.out.println(message);
-				message = input.nextLine();
-				sendMessage(message);
-
-			} catch (ClassNotFoundException e) {
+						// Password
+						message = (String) in.readObject();
+						System.out.println(message);
+						response = input.nextLine();
+						sendMessage(response);
+					} 
+					else if (response.equalsIgnoreCase("2")) {
+						createAccount();
+					} 
+					else {
+						System.out.println("Invalid input. ");
+					}
+				}
+			} 
+			catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-		} catch (UnknownHostException unknownHost) {
+		} 
+		catch (UnknownHostException unknownHost) {
 			System.err.println("You are trying to connect to an unknown host! ");
-		} catch (IOException ioException) {
+		} 
+		catch (IOException ioException) {
 			ioException.printStackTrace();
-		} finally {
+		} 
+		finally {
 			// 4. Closing connection.
 			try {
 				in.close();
 				out.close();
 				requestSocket.close();
-			} catch (IOException ioException) {
+			} 
+			catch (IOException ioException) {
 				ioException.printStackTrace();
 			}
 		}
@@ -94,8 +91,75 @@ public class Requester {
 		try {
 			out.writeObject(msg);
 			out.flush();
-			//System.out.println("\nclient> " + msg);
-		} catch (IOException ioException) {
+			// System.out.println("\nclient> " + msg);
+		} 
+		catch (IOException ioException) {
+			ioException.printStackTrace();
+		}
+	}
+
+	void createAccount() {
+		try {
+			// Name
+			message = (String) in.readObject();
+			System.out.println(message);
+			response = input.nextLine();
+			sendMessage(response);
+
+			// PPSN
+			message = (String) in.readObject();
+			System.out.println(message);
+			response = input.nextLine();
+			sendMessage(response);
+			message = (String) in.readObject();
+			while (message.equalsIgnoreCase("PPSN already exists. Please enter a unique PPSN: ")) {
+					System.out.println(message);
+					response = input.nextLine();
+					sendMessage(response);
+					message = (String) in.readObject();
+			}
+			System.out.println(message);
+
+			// Email
+			message = (String) in.readObject();
+			System.out.println(message);
+			response = input.nextLine();
+			sendMessage(response);
+			message = (String) in.readObject();
+			while (message.equalsIgnoreCase("E-mail already exists. Please enter a unique e-mail: ")) {
+					System.out.println(message);
+					response = input.nextLine();
+					sendMessage(response);
+					message = (String) in.readObject();
+			}
+			System.out.println(message);
+
+			// Password
+			message = (String) in.readObject();
+			System.out.println(message);
+			response = input.nextLine();
+			sendMessage(response);
+
+			// Address
+			message = (String) in.readObject();
+			System.out.println(message);
+			response = input.nextLine();
+			sendMessage(response);
+
+			// Balance
+			message = (String) in.readObject();
+			System.out.println(message);
+			response = input.nextLine();
+			sendMessage(response);
+
+			// Success message.
+			message = (String) in.readObject();
+			System.out.println(message);
+		} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} 
+		catch (IOException ioException) {
 			ioException.printStackTrace();
 		}
 	}
