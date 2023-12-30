@@ -100,19 +100,38 @@ public class AllUsers {
     }
   }
 
-  // Print all user information to a text file.
-  public synchronized void printUserInfoToFile(String filePath) {
+  // This I had to get help with online. I don't fully understand it.
+  // Print new user information to a text file.
+  public synchronized void printNewUserInfoToFile(String filePath) {
     try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
       Iterator<User> iterator = userList.iterator();
       while (iterator.hasNext()) {
         User user = iterator.next();
-        writer.println(user.toString());
+        if (!userExistsInFile(user, filePath)) {
+          writer.println(user.toString());
+        }
       }
-      System.out.println("User information appended to file: " + filePath);
+      System.out.println("New user information appended to file: " + filePath);
     } 
     catch (IOException e) {
-      System.out.println("Error appending user information to file: " + e.getMessage());
+      System.out.println("Error appending new user information to file: " + e.getMessage());
     }
+  }
+
+  // Check if a user already exists in the file.
+  private boolean userExistsInFile(User user, String filePath) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        if (line.contains(user.toString())) {
+          return true;
+        }
+      }
+    } 
+    catch (IOException e) {
+      System.out.println("Error checking if user exists in file: " + e.getMessage());
+    }
+    return false;
   }
 
   // Read all user information from a text file.
