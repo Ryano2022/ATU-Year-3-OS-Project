@@ -8,6 +8,7 @@ Address
 Initial Balance
 - Save it on the server side.
 - Log it on a txt file.
+------------------------------ DONE ------------------------------
 
 
 
@@ -15,7 +16,7 @@ Initial Balance
 - Ask for e-mail and password.
 - Check if the password matches the registered password on server side.
 - If not, deny access. If matches, allow access.
-
+------------------------------ DONE ------------------------------
 
 
 3. Show an options menu to do one of these: 
