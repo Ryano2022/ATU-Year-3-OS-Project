@@ -49,14 +49,39 @@ public class Requester {
 						System.out.println(message);
 						response = input.nextLine();
 						sendMessage(response);
+				
+						// Check if the email exists.
+						message = (String) in.readObject();
+						while (message.equalsIgnoreCase("E-mail not found. Please enter a valid e-mail: ")) {
+								System.out.println(message);
+								response = input.nextLine();
+								sendMessage(response);
+								message = (String) in.readObject();
+						}
+						System.out.println(message);
 
 						// Password
 						message = (String) in.readObject();
 						System.out.println(message);
 						response = input.nextLine();
 						sendMessage(response);
-					} 
+				
+						// Check if the password is correct.
+						message = (String) in.readObject();
+						while (message.equalsIgnoreCase("Password incorrect. Please enter a valid password: ")) {
+								System.out.println(message);
+								response = input.nextLine();
+								sendMessage(response);
+								message = (String) in.readObject();
+						}
+						System.out.println(message);
+
+						// Successful log-in message.
+						message = (String) in.readObject();
+						System.out.println(message);
+				} 
 					else if (response.equalsIgnoreCase("2")) {
+						// Create an account.
 						createAccount();
 					} 
 					else {

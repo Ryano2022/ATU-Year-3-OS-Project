@@ -19,6 +19,7 @@ public class ServerThread extends Thread {
 			out = new ObjectOutputStream(myConnection.getOutputStream());
 			out.flush();
 			in = new ObjectInputStream(myConnection.getInputStream());
+			System.out.println("Connection successful. ");
 
 			// Read in the list of users from users.txt.
 			userList.readUserInfoFromFile(usersFilePath + ".txt");
@@ -40,10 +41,29 @@ public class ServerThread extends Thread {
 				sendMessage("Please enter your email: ");
 				email = (String) in.readObject();
 				System.out.println("client> " + email);
+				// Check the email exists using searchList.
+				userList.searchList(email);
+				// If it doesn't exist, ask for it again.
+				while (userList.searchList(email).equalsIgnoreCase("Not found. ")) {
+						sendMessage("E-mail not found. Please enter a valid e-mail: ");
+						email = (String) in.readObject();
+				}
+				sendMessage("Email found. ");
+				System.out.println("client> " + email);
 
 				sendMessage("Please enter your password: ");
 				password = (String) in.readObject();
 				System.out.println("client> " + password);
+				// Check if the password matches the password on the same line as the email.
+				while (userList.searchList(email).contains(password) == false) {
+						sendMessage("Password incorrect. Please enter a valid password: ");
+						password = (String) in.readObject();
+				}
+				sendMessage("Password accepted. ");
+				System.out.println("client> " + password);
+
+				// Successful log-in message.
+				sendMessage("Log-in successful. ");
 			}
 			// Create an account.
 			else if (message.equalsIgnoreCase("2")) {
