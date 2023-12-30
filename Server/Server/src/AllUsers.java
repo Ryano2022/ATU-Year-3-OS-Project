@@ -8,6 +8,9 @@ public class AllUsers {
     userList = new LinkedList<User>();
   }
 
+  // USER RELATED METHODS
+  /////////////////////////////////////////////////////////////////////////////
+
   // Add a user to the list.
   public synchronized void addUser(String name, String ppsn, String email, String password, String address,
       String balance) {
@@ -19,7 +22,7 @@ public class AllUsers {
       return;
     }
 
-    // Check if the E-mail is unique.
+    // Check if the e-mail is unique.
     if (isUniqueEmail(email) == false) {
       System.out.println("E-mail already exists. User not added.");
       return;
@@ -36,28 +39,6 @@ public class AllUsers {
     // Add the user to the list.
     userList.add(newUser);
     System.out.println("User " + name + " added. ");
-  }
-
-  // Search the list for a user based on name, PPSN or e-mail.
-  public synchronized String searchList(String searchTerm) {
-    Iterator<User> i = userList.iterator();
-    int found = 0;
-    String response = "Not found. ";
-
-    while (i.hasNext() && found == 0) {
-      User newUser = i.next();
-
-      if (newUser.getName().equalsIgnoreCase(searchTerm) || newUser.getPPSN().equalsIgnoreCase(searchTerm) || newUser.getEmail().equalsIgnoreCase(searchTerm)) {
-        found = 1;
-        response = newUser.toString();
-      }
-    }
-    return response;
-  }
-
-  // Check if the list is empty or not.
-  public synchronized boolean hasUsers() {
-    return !userList.isEmpty();
   }
 
   // Check if the PPSN is unique.
@@ -99,8 +80,100 @@ public class AllUsers {
       return true;
     }
   }
+  
+  // Add balance.
+  public synchronized void addBalance(String email, double amount) {
+    Iterator<User> i = userList.iterator();
+    int found = 0;
 
-  // This I had to get help with online. I don't fully understand it.
+    while (i.hasNext() && found == 0) {
+      User newUser = i.next();
+
+      if (newUser.getEmail().equalsIgnoreCase(email)) {
+        found = 1;
+        newUser.setBalance(newUser.getBalance() + amount);
+      }
+    }
+    if (found == 0) {
+      System.out.println("User not found. ");
+    }
+  }
+
+  // Subtract balance.
+  public synchronized void subtractBalance(String email, double amount) {
+    Iterator<User> i = userList.iterator();
+    int found = 0;
+
+    while (i.hasNext() && found == 0) {
+      User newUser = i.next();
+
+      if (newUser.getEmail().equalsIgnoreCase(email)) {
+        found = 1;
+        double newBalance = newUser.getBalance() - amount;
+        if (newBalance < 0) {
+          System.out.println("Insufficient balance. ");
+        } 
+        else {
+          newUser.setBalance(newBalance);
+        }
+      }
+    }
+    if (found == 0) {
+      System.out.println("User not found. ");
+    }
+  }
+
+  // Change password.
+  public synchronized void changePassword(String email, String password) {
+    Iterator<User> i = userList.iterator();
+    int found = 0;
+
+    while (i.hasNext() && found == 0) {
+      User newUser = i.next();
+
+      if (newUser.getEmail().equalsIgnoreCase(email)) {
+        found = 1;
+        newUser.setPassword(password);
+      }
+    }
+    if (found == 0) {
+      System.out.println("User not found. ");
+    }
+  }
+  /////////////////////////////////////////////////////////////////////////////
+
+
+  // LIST RELATED METHODS
+  /////////////////////////////////////////////////////////////////////////////
+
+  // Search the list for a user based on name, PPSN or e-mail.
+  public synchronized String searchList(String searchTerm) {
+    Iterator<User> i = userList.iterator();
+    int found = 0;
+    String response = "Not found. ";
+
+    while (i.hasNext() && found == 0) {
+      User newUser = i.next();
+
+      if (newUser.getName().equalsIgnoreCase(searchTerm) || newUser.getPPSN().equalsIgnoreCase(searchTerm) || newUser.getEmail().equalsIgnoreCase(searchTerm)) {
+        found = 1;
+        response = newUser.toString();
+      }
+    }
+    return response;
+  }
+
+  // Check if the list is empty or not.
+  public synchronized boolean hasUsers() {
+    return !userList.isEmpty();
+  }
+  /////////////////////////////////////////////////////////////////////////////
+
+
+  // PRINT RELATED METHODS
+  /////////////////////////////////////////////////////////////////////////////
+
+  // These methods I had to get help with online. I don't fully understand them.
   // Print new user information to a text file.
   public synchronized void printNewUserInfoToFile(String filePath) {
     try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
@@ -148,4 +221,18 @@ public class AllUsers {
       System.out.println("Error reading user information from file: " + e.getMessage());
     }
   }
+
+  // Print all users to the console.
+  public synchronized String printAllUsers() {
+    StringBuilder users = new StringBuilder();
+    Iterator<User> i = userList.iterator();
+
+    while (i.hasNext()) {
+        User newUser = i.next();
+        users.append(newUser.toString()).append("\n");
+    }
+
+    return users.toString();
+}
+  /////////////////////////////////////////////////////////////////////////////
 }
