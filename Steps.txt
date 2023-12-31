@@ -7,7 +7,7 @@ Password
 Address
 Initial Balance
 - Save it on the server side.
-- Log it on a txt file.
+- Record it on a txt file.
 ------------------------------ DONE ------------------------------
 
 
@@ -22,10 +22,11 @@ Initial Balance
 3. Show an options menu to do one of these: 
 Lodge money
 - Just add a number.
-- Record to a log.
+- Record to a file.
+------------------------------ MOSTLY DONE -----------------------
 
 Show all users
-- Look for the log of all registered users and show them.
+- Look for the file of all registered users and show them.
 
 Transfer money (using PPSN and E-mail)
 - Ask for the PPSN and e-mail of the person you want to transfer to.
@@ -33,11 +34,14 @@ Transfer money (using PPSN and E-mail)
 - If not, ask to enter again. If yes, proceed.
 - Remove money from your own account.
 - Add money to the other persons account.
-- Record to a log.
+- Record to a file.
 - Show success message to sender.
+------------------------------ MOSTLY DONE -----------------------
 
 Show all your bank account transactions.
-- Read log of your transactions.
+- Read file of your transactions.
+------------------------------ NOT DONE --------------------------
 
 Update passwords.
-- Edit registered user's password in the log of all users.
+- Edit registered user's password in the file of all users.
+------------------------------ DONE ------------------------------
