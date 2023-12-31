@@ -264,5 +264,22 @@ public class AllUsers {
       System.out.println("Error reading user information from file: " + e.getMessage());
     }
   }
+
+  // Every time the user makes a transaction, add it to the (ppsn)-transactions.txt file.
+  public synchronized void printTransactionToFile(String filePath, String ppsn, double beforeBalance, double afterBalance, String transactionType) {
+    try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
+      Iterator<User> iterator = userList.iterator();
+      while (iterator.hasNext()) {
+        User user = iterator.next();
+        if (user.getPPSN().equalsIgnoreCase(ppsn)) {
+          writer.println(beforeBalance + ", " + afterBalance + ", " + transactionType);
+        }
+      }
+      System.out.println("Transaction appended to file: " + filePath);
+    } 
+    catch (IOException e) {
+      System.out.println("Error appending transaction to file: " + e.getMessage());
+    }
+  }
   /////////////////////////////////////////////////////////////////////////////
 }

@@ -5,8 +5,9 @@ public class ServerThread extends Thread {
 	Socket myConnection;
 	ObjectOutputStream out;
 	ObjectInputStream in;
-	String message, name, ppsn, email, password, address, balance;
+	String message, name, ppsn, ppsnReceiver, email, password, address, balance, beforeBalance, beforeBalanceReceiver, afterBalance, afterBalanceReceiver, transactionType;
 	String usersFilePath = "users.txt";
+	String transactionFilePath, transactionFilePathReceiver;
 	AllUsers userList;
 
 	public ServerThread(Socket s, AllUsers registeredUsers) {
@@ -78,6 +79,8 @@ public class ServerThread extends Thread {
 				boolean keepGoing = true;
 
 				do{
+					transactionFilePath = userList.searchList(email).split(",")[1] + "-transactions.txt";
+
 					// Send the options list.
 					sendMessage("Please select an option: \n1. View balance. \n2. Lodge money. \n3. Withdraw money. \n4. Transfer money. \n5. Change password. \n6. Show all transactions. \n7. Show all users. \n8. Exit.");
 					message = (String) in.readObject();
@@ -90,33 +93,44 @@ public class ServerThread extends Thread {
 					}
 					// Lodge money.
 					else if (message.equalsIgnoreCase("2")) {
+						transactionType = "Add";
+						beforeBalance = userList.searchList(email).split(",")[5];
+
 						// Ask for the amount to lodge.
 						sendMessage("Please enter the amount to lodge: ");
 						message = (String) in.readObject();
 						System.out.println("client> " + message);
 						userList.addBalance(email, Double.parseDouble(message));
 						sendMessage(userList.searchList(email).split(",")[5] + " is your new total. ");
-						// Update the file.
+						// Update the files.
 						userList.printUpdatedUserInfoToFile(usersFilePath, email);
+						afterBalance = userList.searchList(email).split(",")[5];
+						userList.printTransactionToFile(transactionFilePath, ppsn, Double.parseDouble(beforeBalance), Double.parseDouble(afterBalance), transactionType);
 						// Success message.
 						sendMessage("Lodged successfully. ");
 					}
 					// Withdraw money.
 					else if (message.equalsIgnoreCase("3")) {
+						transactionType = "Subtract";
+						beforeBalance = userList.searchList(email).split(",")[5];
 						// Ask for the amount to withdraw.
 						sendMessage("Please enter the amount to withdraw: ");
 						message = (String) in.readObject();
 						System.out.println("client> " + message);
 						userList.subtractBalance(email, Double.parseDouble(message));
 						sendMessage(userList.searchList(email).split(",")[5] + " is your new total. ");
-						// Update the file.
+						// Update the files.
 						userList.printUpdatedUserInfoToFile(usersFilePath, email);
+						afterBalance = userList.searchList(email).split(",")[5];
+						userList.printTransactionToFile(transactionFilePath, ppsn, Double.parseDouble(beforeBalance), Double.parseDouble(afterBalance), transactionType);
 						// Success message.
 						sendMessage("Withdrawn successfully. ");
 					}
 					// Transfer money.
 					else if (message.equalsIgnoreCase("4")) {
 						String emailTo;
+						transactionType = "Transfer";
+						beforeBalance = userList.searchList(email).split(",")[5];
 
 						// Ask for the amount to transfer.
 						sendMessage("Please enter the amount to transfer: ");
@@ -136,6 +150,7 @@ public class ServerThread extends Thread {
 						}
 						sendMessage("Email found. ");
 						System.out.println("client> " + emailTo);
+						beforeBalanceReceiver = userList.searchList(emailTo).split(",")[5];
 
 						// Subtract the balance from the sender.
 						userList.subtractBalance(email, Double.parseDouble(message));
@@ -143,11 +158,19 @@ public class ServerThread extends Thread {
 						// Add the balance to the receiver.
 						userList.addBalance(emailTo, Double.parseDouble(message));
 
+						// Find the PPSN of the receiver.
+						ppsnReceiver = userList.searchList(emailTo).split(",")[1];
+						transactionFilePathReceiver = userList.searchList(emailTo).split(",")[1] + "-transactions.txt";
+
 						// Send the new balance. 
 						sendMessage(userList.searchList(email).split(",")[5] + " is your new total. ");
-						// Update the file.
+						// Update the files.
 						userList.printUpdatedUserInfoToFile(usersFilePath, email);
+						afterBalance = userList.searchList(email).split(",")[5];
 						userList.printUpdatedUserInfoToFile(usersFilePath, emailTo);
+						afterBalanceReceiver = userList.searchList(emailTo).split(",")[5];
+						userList.printTransactionToFile(transactionFilePath, ppsn, Double.parseDouble(beforeBalance), Double.parseDouble(afterBalance), transactionType);
+						userList.printTransactionToFile(transactionFilePathReceiver, ppsnReceiver, Double.parseDouble(beforeBalanceReceiver), Double.parseDouble(afterBalanceReceiver), transactionType);
 						// Success message.
 						sendMessage("Transferred successfully. ");
 					}
