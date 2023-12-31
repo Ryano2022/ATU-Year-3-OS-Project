@@ -79,6 +79,110 @@ public class Requester {
 						// Successful log-in message.
 						message = (String) in.readObject();
 						System.out.println(message);
+
+						boolean keepGoing = true;
+
+						do{
+							// Show a list of options that the user can now do.
+							message = (String) in.readObject();
+							System.out.println(message);
+							response = input.nextLine();
+							sendMessage(response);
+
+							// View balance.
+							if (response.equalsIgnoreCase("1")) {
+								// Send the balance.
+								message = (String) in.readObject();
+								System.out.println(message);
+							}
+							// Lodge money.
+							else if(response.equalsIgnoreCase("2")) {
+								// Ask for the amount to lodge.
+								message = (String) in.readObject();
+								System.out.println(message);
+								response = input.nextLine();
+								sendMessage(response);
+
+								// Receive the new balance.
+								message = (String) in.readObject();
+								System.out.println(message);
+
+								// Success message.
+								message = (String) in.readObject();
+								System.out.println(message);
+							}
+							// Withdraw money.
+							else if(response.equalsIgnoreCase("3")) {
+								// Ask for the amount to withdraw.
+								message = (String) in.readObject();
+								System.out.println(message);
+								response = input.nextLine();
+								sendMessage(response);
+
+								// Receive the new balance.
+								message = (String) in.readObject();
+								System.out.println(message);
+
+								// Success message.
+								message = (String) in.readObject();
+								System.out.println(message);
+							}
+							// Transfer money.
+							else if(response.equalsIgnoreCase("4")) {
+								// Ask for the amount to transfer.
+								message = (String) in.readObject();
+								System.out.println(message);
+								response = input.nextLine();
+								sendMessage(response);
+
+								// Ask for the email to transfer to.
+								message = (String) in.readObject();
+								System.out.println(message);
+								response = input.nextLine();
+								sendMessage(response);
+
+								// Receive the new balance.
+								message = (String) in.readObject();
+								System.out.println(message);
+
+								// Success message.
+								message = (String) in.readObject();
+								System.out.println(message);
+							}
+							// Change password.
+							else if(response.equalsIgnoreCase("5")) {
+								// Input the new password.
+								message = (String) in.readObject();
+								System.out.println(message);
+								response = input.nextLine();
+								sendMessage(response);
+
+								// Receive the new password.
+								message = (String) in.readObject();
+								System.out.println(message);
+
+								// Success message.
+								message = (String) in.readObject();
+								System.out.println(message);
+							}
+							// Show all transactions.
+							else if(response.equalsIgnoreCase("6")) {
+								// Receive the transactions.
+								message = (String) in.readObject();
+								System.out.println(message);
+							}
+							// Show all users.
+							else if(response.equalsIgnoreCase("7")) {
+								// Receive the users.
+								message = (String) in.readObject();
+								System.out.println(message);
+							}
+							else {
+								message = (String) in.readObject();
+								System.out.println(message);
+								keepGoing = false;
+							}
+						}while(keepGoing == true);
 				} 
 					else if (response.equalsIgnoreCase("2")) {
 						// Create an account.

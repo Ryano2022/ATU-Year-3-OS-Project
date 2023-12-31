@@ -87,11 +87,11 @@ public class AllUsers {
     int found = 0;
 
     while (i.hasNext() && found == 0) {
-      User newUser = i.next();
+      User user = i.next();
 
-      if (newUser.getEmail().equalsIgnoreCase(email)) {
+      if (user.getEmail().equalsIgnoreCase(email)) {
         found = 1;
-        newUser.setBalance(newUser.getBalance() + amount);
+        user.setBalance(user.getBalance() + amount);
       }
     }
     if (found == 0) {
@@ -105,16 +105,16 @@ public class AllUsers {
     int found = 0;
 
     while (i.hasNext() && found == 0) {
-      User newUser = i.next();
+      User user = i.next();
 
-      if (newUser.getEmail().equalsIgnoreCase(email)) {
+      if (user.getEmail().equalsIgnoreCase(email)) {
         found = 1;
-        double newBalance = newUser.getBalance() - amount;
+        double newBalance = user.getBalance() - amount;
         if (newBalance < 0) {
           System.out.println("Insufficient balance. ");
         } 
         else {
-          newUser.setBalance(newBalance);
+          user.setBalance(newBalance);
         }
       }
     }
@@ -129,11 +129,11 @@ public class AllUsers {
     int found = 0;
 
     while (i.hasNext() && found == 0) {
-      User newUser = i.next();
+      User user = i.next();
 
-      if (newUser.getEmail().equalsIgnoreCase(email)) {
+      if (user.getEmail().equalsIgnoreCase(email)) {
         found = 1;
-        newUser.setPassword(password);
+        user.setPassword(password);
       }
     }
     if (found == 0) {
@@ -191,6 +191,45 @@ public class AllUsers {
     }
   }
 
+  // Find a specific user in the list and then replace the line in the text file with the new user information.
+  public synchronized void printUpdatedUserInfoToFile(String filePath, String email) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+      String line;
+      StringBuilder inputBuffer = new StringBuilder();
+
+      while ((line = reader.readLine()) != null) {
+        if (line.contains(email)) {
+          line = searchList(email);
+        }
+        inputBuffer.append(line);
+        inputBuffer.append('\n');
+      }
+      reader.close();
+
+      // Write the new string with the replaced line OVER the same file.
+      FileOutputStream fileOut = new FileOutputStream(filePath);
+      fileOut.write(inputBuffer.toString().getBytes());
+      fileOut.close();
+      System.out.println("User information updated in file: " + filePath);
+    } 
+    catch (IOException e) {
+      System.out.println("Error updating user information in file: " + e.getMessage());
+    }
+  }
+
+  // Print all users to the console.
+  public synchronized String printAllUsers() {
+    StringBuilder users = new StringBuilder();
+    Iterator<User> i = userList.iterator();
+
+    while (i.hasNext()) {
+        User newUser = i.next();
+        users.append(newUser.toString()).append("\n");
+    }
+
+    return users.toString();
+  }
+
   // Check if a user already exists in the file.
   private boolean userExistsInFile(User user, String filePath) {
     try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -221,18 +260,5 @@ public class AllUsers {
       System.out.println("Error reading user information from file: " + e.getMessage());
     }
   }
-
-  // Print all users to the console.
-  public synchronized String printAllUsers() {
-    StringBuilder users = new StringBuilder();
-    Iterator<User> i = userList.iterator();
-
-    while (i.hasNext()) {
-        User newUser = i.next();
-        users.append(newUser.toString()).append("\n");
-    }
-
-    return users.toString();
-}
   /////////////////////////////////////////////////////////////////////////////
 }
