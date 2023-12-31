@@ -218,18 +218,22 @@ public class AllUsers {
   }
 
   // Print all users to the console.
-  public synchronized String printAllUsers() {
+  public synchronized String printAllUsers(int option) {
     StringBuilder users = new StringBuilder();
     Iterator<User> i = userList.iterator();
 
     while (i.hasNext()) {
-        User newUser = i.next();
+      User newUser = i.next();
+      if (option == 1) {
+        users.append(newUser.getName()).append(", ").append(newUser.getEmail()).append("\n");
+      } 
+      else {
         users.append(newUser.toString()).append("\n");
+      }
     }
 
     return users.toString();
   }
-
   // Check if a user already exists in the file.
   private boolean userExistsInFile(User user, String filePath) {
     try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {

@@ -172,7 +172,7 @@ public class ServerThread extends Thread {
 					// Show all users.
 					else if (message.equalsIgnoreCase("7")) {
 						// Send the users.
-						sendMessage(userList.printAllUsers());
+						sendMessage(userList.printAllUsers(1));
 					}
 					else {
 						// Send an exiting message.
